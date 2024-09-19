@@ -18,10 +18,15 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response) {
-            if ($response->status() == ResponseAlias::HTTP_NOT_FOUND) {
-                return JsonResource::make([
-                    'message' => 'Not Found',
-                ]);
-            }
+            $msg = match ($response->status()) {
+                ResponseAlias::HTTP_NOT_FOUND => 'Not found',
+                default => null,
+            };
+
+            $response->setContent([
+                'message' => $msg,
+            ]);
+
+            return $response;
         });
     })->create();
