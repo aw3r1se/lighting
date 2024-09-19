@@ -1,7 +1,7 @@
 services:
     app:
         build:
-            context: ./deploy/docker/php
+            context: ./deploy/dev/php
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
