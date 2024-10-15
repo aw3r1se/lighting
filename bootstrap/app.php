@@ -24,6 +24,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('backup:clean')
             ->daily()
             ->at('4:00');
+
+        $schedule->command('activitylog:clean --days=7')
+            ->daily()
+            ->at('5:00');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->respond(function (Response $response) {

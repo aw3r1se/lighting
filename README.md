@@ -9,6 +9,7 @@
 ## `Preloaded dependencies`
 - `tymon/jwt-auth`
 - `spatie/laravel-backup`
+- `spatie/laravel-activitylog`
 - `spatie/laravel-permission`
 - `spatie/laravel-medialibrary`
 - `laravel/horizon`
