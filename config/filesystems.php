@@ -29,6 +29,11 @@ return [
     */
 
     'disks' => [
+        'local' => [
+            'driver' => 'local',
+            'root' => storage_path('app'),
+            'throw' => false,
+        ],
 
         'media' => [
             'driver' => 'local',
@@ -38,9 +43,10 @@ return [
             'throw' => false,
         ],
 
-        'local' => [
+        'backup' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => storage_path('app/backups'),
+            'visibility' => 'private',
             'throw' => false,
         ],
 
