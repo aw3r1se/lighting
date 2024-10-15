@@ -1,5 +1,13 @@
 # `Laravel API Build`
 
+## `Preloaded dependencies`
+- `tymon/jwt-auth`
+- `spatie/laravel-permission`
+- `spatie/laravel-medialibrary`
+- `laravel/horizon`
+### `Dev`
+- `laravel/telescope`
+
 ## `Deploy`
 
 - `cp .env.example .env`
