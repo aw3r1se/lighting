@@ -1,5 +1,11 @@
 # `Laravel API Build`
 
+## `Changelog`
+- `Resources removed`
+- `Web-routes removed`
+- `Dockerfile rewokred`
+- `Removed redutant migrations & factories`
+
 ## `Preloaded dependencies`
 - `tymon/jwt-auth`
 - `spatie/laravel-permission`
