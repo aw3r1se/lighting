@@ -8,13 +8,16 @@
 
 ## `Preloaded dependencies`
 - `tymon/jwt-auth`
+- `laravel/horizon`
 - `spatie/laravel-backup`
 - `spatie/laravel-activitylog`
 - `spatie/laravel-permission`
 - `spatie/laravel-medialibrary`
-- `laravel/horizon`
+- `darkaonline/l5-swagger`
 ### `Dev`
 - `laravel/telescope`
+- `barryvdh/laravel-ide-helper`
+- `larastan/larastan`
 
 ## `Deploy`
 

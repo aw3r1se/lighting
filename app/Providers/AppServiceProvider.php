@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,15 +16,14 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
+            $this->app->register(IdeHelperServiceProvider::class);
         }
     }
 
     /**
      * Bootstrap any application services.
-     * @throws \Throwable
+     *
+     * @throws Throwable
      */
-    public function boot(): void
-    {
-
-    }
+    public function boot(): void {}
 }
