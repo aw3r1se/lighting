@@ -45,8 +45,7 @@
             "composer install",
             "@php artisan key:generate",
             "@php artisan storage:link",
-            "@php artisan migrate",
-            "@php artisan jwt:secret"
+            "@php artisan migrate"
         ],
         "app:before-commit": [
             "@php artisan test",
