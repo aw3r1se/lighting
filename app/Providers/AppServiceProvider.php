@@ -31,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
         if (empty(config('app.key'))) {
             Artisan::call('key:generate');
         }
+
+        if (empty(config('jwt.secret'))) {
+            Artisan::call('jwt:secret');
+        }
     }
 }

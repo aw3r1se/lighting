@@ -31,7 +31,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read Collection<int, Permission> $permissions
  * @property-read Collection<int, Role> $roles
- *
  * @method static UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -40,7 +39,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static Builder|User role($roles, $guard = null, $without = false)
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
- *
  * @mixin Eloquent
  */
 class User extends Authenticatable implements JWTSubject
