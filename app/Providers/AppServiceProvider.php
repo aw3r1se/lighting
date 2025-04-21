@@ -3,9 +3,7 @@
 namespace App\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
-use Throwable;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,19 +19,5 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @throws Throwable
-     */
-    public function boot(): void
-    {
-        if (empty(config('app.key'))) {
-            Artisan::call('key:generate');
-        }
-
-        if (empty(config('jwt.secret'))) {
-            Artisan::call('jwt:secret');
-        }
-    }
+    public function boot(): void {}
 }

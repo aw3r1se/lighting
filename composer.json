@@ -44,6 +44,8 @@
         "app:prepare": [
             "composer install --no-interaction",
             "@php artisan storage:link",
+            "@php artisan key:generate --if-not-exist",
+            "@php artisan jwt:secret --always-no --force",
             "@php artisan migrate --force"
         ],
         "app:before-commit": [

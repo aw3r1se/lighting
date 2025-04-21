@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\KeyGenerateCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withCommands([
+        KeyGenerateCommand::class,
+    ])
     ->withMiddleware(function (Middleware $middleware) {})
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('backup:run')
