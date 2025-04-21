@@ -1,6 +1,10 @@
-FROM php:8.4-fpm-alpine AS php
+FROM php:8.4-fpm-alpine AS base
+
 ARG WWWUSER=1000
 ARG WWWGROUP=1000
+
+WORKDIR /var/www/app
+
 RUN set -eux; \
     addgroup -g ${WWWGROUP} app; \
     adduser -D -u ${WWWUSER} -G app app; \
@@ -13,22 +17,44 @@ RUN set -eux; \
     apk del .build-deps; \
     apk add --no-cache libpq; \
     mkdir -p /var/www/app && chown -R app:app /var/www/app
-RUN echo "upload_max_filesize=30M" > /usr/local/etc/php/php.ini-production && echo "post_max_size=30M" >> /usr/local/etc/php/php.ini-production
-WORKDIR /var/www/app
+
 COPY --from=composer/composer:2 /usr/bin/composer /usr/local/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
+COPY --chown=app:app . .
+RUN chmod +x ./deploy/entrypoint.sh
+
+
+FROM base AS local
+RUN set -eux; \
+    apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS; \
+    pecl install xdebug; \
+    docker-php-ext-enable xdebug; \
+    apk del .phpize-deps
+
 USER app:app
 
-FROM php AS prod
-RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
-COPY --chown=app:app composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --optimize-autoloader
-COPY --chown=app:app . .
+ENTRYPOINT ["./deploy/entrypoint.sh"]
+
+
+FROM base AS dev
+
+USER app:app
+
+ENTRYPOINT ["./deploy/entrypoint.sh"]
+
+
+FROM base AS production
+
+ARG WWWUSER=1000
+ARG WWWGROUP=1000
+
+WORKDIR /var/www/app
+
+COPY --from=base --chown=app:app /var/www/app /var/www/app
+
+USER app:app
+
 EXPOSE 9000
+
 CMD ["php-fpm"]
-
-FROM php AS dev
-EXPOSE 80
-
-FROM dev AS xdebug
-RUN set -eux; apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS; pecl install xdebug; docker-php-ext-enable xdebug; apk del .phpize-deps

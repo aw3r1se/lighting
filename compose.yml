@@ -1,39 +1,43 @@
+x-common: &common
+    image: "${APP_NAME:-lighting}:${APP_ENV:-local}"
+
 x-app: &app
-    build:
-        context: ./deploy/php
-        dockerfile: Dockerfile
-        target: ${COMPOSE_TARGET:-dev}
+    <<: *common
     volumes:
         - .:/var/www/app
+#    restart: unless-stopped
+    depends_on:
+        - builder
+        - pgsql
+        - redis
 
 services:
+    builder:
+        build:
+            dockerfile: ./deploy/php/Dockerfile
+            target: ${APP_ENV:-local}
+        <<: *common
+
     app:
         <<: *app
         ports:
             - "${APP_PORT:-80}:80"
-        depends_on:
-            - pgsql
-            - redis
         command: "php -d variables_order=EGPCS /var/www/app/artisan serve --host=0.0.0.0 --port=${APP_PORT:-80}"
 
     worker:
         <<: *app
         command: php /var/www/app/artisan horizon
-        restart: unless-stopped
-
     scheduler:
         <<: *app
         command: php /var/www/app/artisan schedule:work
-        restart: unless-stopped
-
     pgsql:
         image: postgres:15
         ports:
             - "${FORWARD_DB_PORT:-5432}:5432"
         environment:
-            POSTGRES_DB: ${DB_DATABASE}
-            POSTGRES_USER: ${DB_USERNAME}
-            POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+            POSTGRES_DB: ${DB_DATABASE:-lighting}
+            POSTGRES_USER: ${DB_USERNAME:-app}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
         volumes:
             - app-pgsql:/var/lib/postgresql/data
 

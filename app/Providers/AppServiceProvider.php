@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
 
@@ -25,5 +26,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @throws Throwable
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+        if (empty(config('app.key'))) {
+            Artisan::call('key:generate');
+        }
+    }
 }
